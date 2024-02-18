@@ -6,7 +6,7 @@ const wrapper = document.querySelector(".wrapper"),
   weatherPart = wrapper.querySelector(".weather-part"),
   wIcon = weatherPart.querySelector("img"),
   arrowBack = wrapper.querySelector("header i");
-
+let latitude, longitude;
 let api;
 
 inputField.addEventListener("keyup", (e) => {
@@ -17,7 +17,6 @@ inputField.addEventListener("keyup", (e) => {
 
 locationBtn.addEventListener("click", () => {
   if (navigator.geolocation) {
-    // if browser support geolocation api
     navigator.geolocation.getCurrentPosition(onSuccess, onError);
   } else {
     alert("Your browser not support geolocation api");
@@ -25,16 +24,26 @@ locationBtn.addEventListener("click", () => {
 });
 
 function requestApi(city) {
-  api = `https://api.weatherapi.com/v1/current.json?key=3ffd84975bd04c10b55190700241702&q=${city}`;
+  api = `http://api.weatherapi.com/v1/current.json?key=3ffd84975bd04c10b55190700241702&q=${city}`;
   fetchData();
+  requestForecastApi(city);
 }
 
 function onSuccess(position) {
-  const { latitude, longitude } = position.coords;
-  api = `https://api.weatherapi.com/v1/current.json?key=3ffd84975bd04c10b55190700241702&q=${latitude},${longitude}`;
+  latitude = position.coords.latitude;
+  longitude = position.coords.longitude;
+  api = `http://api.weatherapi.com/v1/current.json?key=3ffd84975bd04c10b55190700241702&q=${latitude},${longitude}`;
   fetchData();
+  requestForecastApi(`${latitude},${longitude}`);
 }
 
+function requestForecastApi(city) {
+  if (city.includes(",")) {
+    [latitude, longitude] = city.split(",");
+  }
+  api = `http://api.weatherapi.com/v1/forecast.json?key=3ffd84975bd04c10b55190700241702&q=${city}&days=7`;
+  fetchForecastData();
+}
 function onError(error) {
   infoTxt.innerText = error.message;
   infoTxt.classList.add("error");
@@ -54,11 +63,9 @@ function fetchData() {
 
 function weatherDetails(info) {
   if (info.error) {
-    // if user entered city name isn't valid
     infoTxt.classList.replace("pending", "error");
     infoTxt.innerText = `${inputField.value} isn't a valid city name`;
   } else {
-    //getting required properties value from the whole weather information
     const city = info.location.name;
     const country = info.location.country;
     const description = info.current.condition.text;
@@ -77,7 +84,6 @@ function weatherDetails(info) {
     weatherPart.querySelector(".vis span").innerText = vis_km;
     weatherPart.querySelector(".pressure_mb span").innerText = pressure_mb;
 
-    // using custom weather icon according to the description
     if (description.includes("rain")) {
       wIcon.src = "icons/rain.svg";
     } else if (description.includes("storm")) {
@@ -92,7 +98,6 @@ function weatherDetails(info) {
       wIcon.src = "icons/clear.svg";
     }
 
-    //passing a particular weather info to a particular element
     weatherPart.querySelector(".temp .numb").innerText = Math.floor(temp);
     weatherPart.querySelector(".weather").innerText = description;
     weatherPart.querySelector(
@@ -111,3 +116,73 @@ function weatherDetails(info) {
 arrowBack.addEventListener("click", () => {
   wrapper.classList.remove("active");
 });
+
+function fetchForecastData() {
+  fetch(api)
+    .then((res) => res.json())
+    .then((result) => forecastDetails(result))
+    .catch(() => {
+      infoTxt.innerText = "Something went wrong";
+      infoTxt.classList.replace("pending", "error");
+    });
+}
+
+const modal = document.getElementById("myModal");
+const btn = document.getElementById("openModal");
+
+btn.onclick = function () {
+  modal.style.display = "block";
+};
+
+const span = document.getElementById("closeModal");
+
+span.onclick = function () {
+  modal.style.display = "none";
+};
+
+window.onclick = function (event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};
+
+function forecastDetails(info) {
+  if (info.error) {
+    infoTxt.classList.replace("pending", "error");
+    infoTxt.innerText = `${inputField.value} isn't a valid city name`;
+  } else {
+    const forecast = info.forecast.forecastday;
+
+    forecast.forEach((day) => {
+      const date = day.date;
+      const temp = day.day.avgtemp_c;
+      const humidity = day.day.avghumidity;
+      const condition = day.day.condition.text;
+
+      let icon;
+      if (condition.includes("rain")) {
+        icon = "icons/rain.svg";
+      } else if (condition.includes("storm")) {
+        icon = "icons/storm.svg";
+      } else if (condition.includes("snow")) {
+        icon = "icons/snow.svg";
+      } else if (condition.includes("haze")) {
+        icon = "icons/haze.svg";
+      } else if (condition.includes("cloud")) {
+        icon = "icons/cloud.svg";
+      } else {
+        icon = "icons/clear.svg";
+      }
+
+      const forecastElement = document.createElement("div");
+      forecastElement.classList.add("day");
+      forecastElement.innerHTML = `
+    <img src="${icon}" alt="${condition}">
+    <h2>${date}</h2>
+    <p>Temperature: ${temp}°C</p>
+    <p>Humidity: ${humidity}%</p>
+  `;
+      document.querySelector(".forecast").appendChild(forecastElement);
+    });
+  }
+}
