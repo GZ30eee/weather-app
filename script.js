@@ -147,6 +147,7 @@ window.onclick = function (event) {
 };
 
 function forecastDetails(info) {
+    document.querySelector(".forecast").innerHTML = "";
   if (info.error) {
     infoTxt.classList.replace("pending", "error");
     infoTxt.innerText = `${inputField.value} isn't a valid city name`;
