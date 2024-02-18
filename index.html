@@ -13,7 +13,26 @@
   </head>
   <body>
     <div class="wrapper">
-      <header><i class="bx bx-left-arrow-alt"></i>Weather App</header>
+      <header style="display: flex">
+        <i class="bx bx-left-arrow-alt"></i>
+        <img src="./icons/relicon.png" style="height: 40px; width: 40px" />
+        Weather App
+        <a
+          href="https://www.linkedin.com/in/ghanshyamsinh-zala-1a1b9924b/"
+          target="_blank"
+          style="
+            background-color: #43affc;
+            font-size: small;
+            color: white;
+            border-radius: 5px;
+            padding: 3px;
+            margin-left: auto;
+            text-decoration: none;
+          "
+        >
+          <span>Follow me</span>
+        </a>
+      </header>
 
       <section class="input-part">
         <p class="info-txt"></p>
@@ -89,6 +108,13 @@
                 <span>_</span><span style="font-weight: 500">mb</span>
                 <p>Pressure</p>
               </div>
+            </div>
+          </div>
+          <button id="openModal" class="btn">Show 7-day forecast</button>
+          <div id="myModal" class="modal">
+            <div class="modal-content">
+              <span id="closeModal">&times;</span>
+              <div class="forecast"></div>
             </div>
           </div>
         </div>
