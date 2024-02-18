@@ -25,13 +25,13 @@ locationBtn.addEventListener("click", () => {
 });
 
 function requestApi(city) {
-  api = `http://api.weatherapi.com/v1/current.json?key=3ffd84975bd04c10b55190700241702&q=${city}`;
+  api = `https://api.weatherapi.com/v1/current.json?key=3ffd84975bd04c10b55190700241702&q=${city}`;
   fetchData();
 }
 
 function onSuccess(position) {
   const { latitude, longitude } = position.coords;
-  api = `http://api.weatherapi.com/v1/current.json?key=3ffd84975bd04c10b55190700241702&q=${latitude},${longitude}`;
+  api = `https://api.weatherapi.com/v1/current.json?key=3ffd84975bd04c10b55190700241702&q=${latitude},${longitude}`;
   fetchData();
 }
 
