@@ -24,7 +24,7 @@ locationBtn.addEventListener("click", () => {
 });
 
 function requestApi(city) {
-  api = `http://api.weatherapi.com/v1/current.json?key=3ffd84975bd04c10b55190700241702&q=${city}`;
+  api = `https://api.weatherapi.com/v1/current.json?key=3ffd84975bd04c10b55190700241702&q=${city}`;
   fetchData();
   requestForecastApi(city);
 }
@@ -32,7 +32,7 @@ function requestApi(city) {
 function onSuccess(position) {
   latitude = position.coords.latitude;
   longitude = position.coords.longitude;
-  api = `http://api.weatherapi.com/v1/current.json?key=3ffd84975bd04c10b55190700241702&q=${latitude},${longitude}`;
+  api = `https://api.weatherapi.com/v1/current.json?key=3ffd84975bd04c10b55190700241702&q=${latitude},${longitude}`;
   fetchData();
   requestForecastApi(`${latitude},${longitude}`);
 }
@@ -41,7 +41,7 @@ function requestForecastApi(city) {
   if (city.includes(",")) {
     [latitude, longitude] = city.split(",");
   }
-  api = `http://api.weatherapi.com/v1/forecast.json?key=3ffd84975bd04c10b55190700241702&q=${city}&days=7`;
+  api = `https://api.weatherapi.com/v1/forecast.json?key=3ffd84975bd04c10b55190700241702&q=${city}&days=7`;
   fetchForecastData();
 }
 function onError(error) {
