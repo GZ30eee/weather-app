@@ -5,58 +5,56 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="./icons/relicon.png" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
     <title>Weather App</title>
   </head>
   <body>
     <div class="wrapper">
-      <header style="display: flex">
+      <header>
         <i class="bx bx-left-arrow-alt"></i>
-        <img src="./icons/relicon.png" style="height: 40px; width: 40px" />
+        <img src="./icons/relicon.png" class="header-icon" alt="Weather App Icon" />
         Weather App
-        <a
-          href="https://www.linkedin.com/in/ghanshyamsinh-zala-1a1b9924b/"
-          target="_blank"
-          style="
-            background-color: #43affc;
-            font-size: small;
-            color: white;
-            border-radius: 5px;
-            padding: 3px;
-            margin-left: auto;
-            text-decoration: none;
-          "
-        >
-          <span>Follow me</span>
-        </a>
+        <div class="header-controls">
+          <button id="themeToggle" class="theme-toggle" title="Toggle Theme">
+            <i class="bx bx-moon"></i>
+          </button>
+          <button id="unitToggle" class="unit-toggle">°C</button>
+          <a href="https://www.linkedin.com/in/ghanshyamsinh-zala-1a1b9924b/" target="_blank" class="follow-btn" rel="noopener">
+            Follow me
+          </a>
+        </div>
       </header>
 
       <section class="input-part">
         <p class="info-txt"></p>
         <div class="content">
-          <input
-            type="text"
-            spellcheck="false"
-            placeholder="Enter city name"
-            required
-          />
+          <div class="input-group">
+            <input type="text" spellcheck="false" placeholder="Enter city name" required />
+            <button class="search-btn" title="Search"><i class="bx bx-search"></i></button>
+          </div>
           <div class="separator"></div>
-          <button>Get Device Location</button>
+          <button class="location-btn">Get Device Location</button>
+          <div class="favorites">
+            <h4>Favorite Locations</h4>
+            <div class="favorites-list"></div>
+          </div>
         </div>
       </section>
+
       <section class="weather-part">
         <img src="" alt="Weather Icon" />
         <div class="temp">
           <span class="numb">_</span>
-          <span class="deg">°</span>C
+          <span class="deg">°</span><span class="unit">C</span>
         </div>
         <div class="weather">_ _</div>
         <div class="location">
           <i class="bx bx-map"></i>
           <span>_, _</span>
+        </div>
+        <div class="hourly-forecast">
+          <h4>Hourly Forecast</h4>
+          <div class="hourly-container"></div>
         </div>
         <div class="bottom-details">
           <div class="row">
@@ -65,7 +63,7 @@
               <div class="details">
                 <div class="temp">
                   <span class="numb-2">_</span>
-                  <span class="deg">°</span>C
+                  <span class="deg">°</span><span class="unit">C</span>
                 </div>
                 <p>Feels like</p>
               </div>
@@ -99,26 +97,29 @@
               <i class="bx bx-show-alt"></i>
               <div class="details">
                 <span>_</span>
-                <p>Visbility</p>
+                <p>Visibility</p>
               </div>
             </div>
             <div class="column pressure_mb">
               <i class="bx bx-water"></i>
               <div class="details">
-                <span>_</span><span style="font-weight: 500">mb</span>
+                <span>_</span><span class="pressure-unit">mb</span>
                 <p>Pressure</p>
               </div>
             </div>
           </div>
           <button id="openModal" class="btn">Show 7-day forecast</button>
-          <div id="myModal" class="modal">
-            <div class="modal-content">
-              <span id="closeModal" style="cursor: pointer;">&times;</span>
-              <div class="forecast"></div>
-            </div>
-          </div>
+          <button id="saveFavorite" class="btn favorite-btn">Save to Favorites</button>
         </div>
       </section>
+
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+          <span id="closeModal">&times;</span>
+          <h3>7-Day Forecast</h3>
+          <div class="forecast"></div>
+        </div>
+      </div>
     </div>
 
     <script src="script.js"></script>
